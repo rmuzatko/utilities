@@ -1,39 +1,28 @@
+# Import smtplib for the actual sending function
 import smtplib
 
-gmail_user = 'rmuzatko@gmail.com'
-yahoo_user = 'rmuzatko@yahoo.com'
-gmail_pwd = 'kobra007'
-FROM = gmail_user
-TO = yahoo_user
-SUBJECT = 'pokus'
-MSG = 'neco neco'
-
-# Prepare actual message
+# Import the email modules we'll need
+#from email.mime.text import MIMEText
 '''
-message = """From: %s\nTo: %s\nSubject: %s\n\n%s
-""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
+textfile = ('c:\\windows-version.txt')
+
+# Open a plain text file for reading.  For this example, assume that
+# the text file contains only ASCII characters.
+with open(textfile) as fp:
+    # Create a text/plain message
+    msg = MIMEText(fp.read())
 '''
+# me == the sender's email address
+# you == the recipient's email address
+#msg['Subject'] = 'The contents of %s' % textfile
+msg['Subject'] = 'The contents of'
+msg['From'] = 'rmuzatko@gmail.com'
+msg['To'] = 'rmuzatko@yahoo.com'
 
-message = """From: %s\nTo: %s\nSubject: %s\n\n%s""" % (FROM, ", ".join(TO), SUBJECT, TEXT)
-
-'''
-message = """From: From gmail_user
-To: rmuzatko@yahoo.com
-Subject: SMTP e-mail test
-
-This is a test e-mail message.
-"""
-'''
-
-try:
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.ehlo()
-    server.starttls()
-    server.login(gmail_user, gmail_pwd)
-    server.sendmail(FROM, TO, message)
-    server.close()
-    print ('successfully sent the mail')
-except:
-    print ("failed to send mail")
-
-
+# Send the message via our own SMTP server.
+s = smtplib.SMTP("smtp.gmail.com", 587)
+s.ehlo()
+s.starttls()
+s.login(gmail_user, gmail_pwd)
+s.send_message(msg)
+s.quit()
